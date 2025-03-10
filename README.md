@@ -1,2 +1,2 @@
 # Python-interpreter-on-C-
-Minimal Python interpreter based on C++
+Минимальный интерпретатор ЯП Python, написанный на ЯП C++ 
