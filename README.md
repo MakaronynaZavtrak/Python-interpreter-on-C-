@@ -1,2 +1,2 @@
-# Python-interpreter-on-C-
+# Python-interpreter-on-Cpp
 Минимальный интерпретатор ЯП Python, написанный на ЯП C++ 
