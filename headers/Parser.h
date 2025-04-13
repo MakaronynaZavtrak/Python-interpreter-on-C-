@@ -77,6 +77,7 @@ private:
 
     std::shared_ptr<ASTNode> parseExpression();
     std::shared_ptr<ASTNode> parseTerm();
+    std::shared_ptr<ASTNode> parsePower();
     std::shared_ptr<ASTNode> parseFactor();
     Token peek() const;
     Token advance();

@@ -19,12 +19,24 @@ std::shared_ptr<ASTNode> Parser::parseExpression()
 
 std::shared_ptr<ASTNode> Parser::parseTerm()
 {
-    auto left = parseFactor();
-    while (peek().type == TOKEN_OP && (peek().value == "*" || peek().value == "/" || peek().value == "**" || peek().value == "//" || peek().value == "%"))
+    auto left = parsePower();
+    while (peek().type == TOKEN_OP && (peek().value == "*" || peek().value == "/" || peek().value == "//" || peek().value == "%"))
     {
         QString op = advance().value;
-        auto right = parseFactor();
+        auto right = parsePower();
         left = std::make_shared<BinOpNode>(left, op, right);
+    }
+    return left;
+}
+
+std::shared_ptr<ASTNode> Parser::parsePower()
+{
+    auto left = parseFactor();
+    if (peek().type == TOKEN_OP && peek().value == "**")
+    {
+        QString op = advance().value;
+        auto right = parsePower();
+        return std::make_shared<BinOpNode>(left, op, right);
     }
     return left;
 }
