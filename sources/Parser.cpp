@@ -70,7 +70,7 @@ std::shared_ptr<ASTNode> Parser::parseFactor()
         }
         return expr;
     }
-    throw std::runtime_error("Unexpected token" + token.value.toStdString());
+    throw std::runtime_error("Unexpected token: \"" + token.value.toStdString() + "\"");
 }
 
 Token Parser::peek() const { return (current < tokens.size()) ? tokens[current] : Token(TOKEN_EOF, "", 0); }
