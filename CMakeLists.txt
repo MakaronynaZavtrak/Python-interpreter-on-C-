@@ -16,13 +16,17 @@ set(TS_FILES myPython_ru_BY.ts)
 
 add_executable(myPython
   main.cpp
-  ${TS_FILES}
+  myPython_ru_BY.xml
   headers/Lexer.h
   headers/Parser.h
   sources/Lexer.cpp
   sources/Parser.cpp
   headers/Interpreter.h
   sources/Interpreter.cpp
+  headers/Environment.h
+  sources/Environment.cpp
+  headers/Value.h
+  sources/Value.cpp
 )
 
 
