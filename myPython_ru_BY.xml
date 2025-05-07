@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ru_BY">
+    <context>
+        <name>Interpreter</name>
+        <message>
+            <source>Hello and welcome to my minimal Python interpreter!</source>
+            <translation>Здравствуйте и добро пожаловать в мой минимальный интерпретатор Python!</translation>
+        </message>
+        <message>
+            <source>Made by Semenov Oleg, with care from MathMech. Let's code!</source>
+            <translation>Создано Семеновым Олегом при поддержке МатМеха. Давайте программировать!</translation>
+        </message>
+        <message>
+            <source>>>></source>
+            <translation>>>></translation>
+        </message>
+        <message>
+            <source>Error:</source>
+            <translation>Ошибка:</translation>
+        </message>
+    </context>
+</TS>
