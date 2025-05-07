@@ -1,0 +1,14 @@
+# ninja log v6
+7	107	7679255366620248	D:/Qt/QtProjects/myPython/cmake-build-debug/CMakeFiles/cmake.verify_globs	bbd7857df1b30360
+113	213	7679255367680349	D:/Qt/QtProjects/myPython/cmake-build-debug/myPython_autogen/mocs_compilation.cpp	abcb83e5be8ed627
+113	213	7679255367680349	myPython_autogen/timestamp	abcb83e5be8ed627
+113	213	7679255367680349	myPython_autogen/mocs_compilation.cpp	abcb83e5be8ed627
+113	213	7679255367680349	D:/Qt/QtProjects/myPython/cmake-build-debug/myPython_autogen/timestamp	abcb83e5be8ed627
+382	2564	7679255370373728	CMakeFiles/myPython.dir/sources/Interpreter.cpp.obj	42154ec906d82d52
+298	426	7678855177994587	CMakeFiles/myPython.dir/myPython_autogen/mocs_compilation.cpp.obj	dbf6fa89ba223031
+406	1821	7679255370609935	CMakeFiles/myPython.dir/sources/Value.cpp.obj	c34219e46414c37f
+213	616	7679255368671086	CMakeFiles/myPython.dir/main.cpp.obj	5a3d96bb4488b37d
+395	2294	7679255370498850	CMakeFiles/myPython.dir/sources/Environment.cpp.obj	57422b259724fa2f
+372	2331	7679255370262553	CMakeFiles/myPython.dir/sources/Lexer.cpp.obj	4d85f8738812f154
+377	3468	7679255370316312	CMakeFiles/myPython.dir/sources/Parser.cpp.obj	c042309762ee477
+3468	3848	7679255401222989	myPython.exe	e0efaaaf6943a287
