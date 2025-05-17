@@ -14,7 +14,39 @@
  */
 QVector<Token> Lexer::tokenize(const QString& code) {
     QVector<Token> tokens;
-    while (true) {
+    pos = 0; //текущая позиция в коде
+    line = 1;
+    column = 1;
+    indentStack.clear();
+    indentStack.push_back(0);
+
+    while (pos < code.length()) {
+        QChar ch = code[pos];
+        if (ch == '\n') {
+            tokens.push_back(Token(TOKEN_NEWLINE, "", line));
+            pos++;
+            line++;
+            column = 1;
+
+            int spaceCount = 0;
+            int tmpPos = pos;
+            while (tmpPos < code.length() && code[tmpPos] == ' ') {
+                spaceCount++;
+                tmpPos++;
+            }
+            if (spaceCount > indentStack.last()) {
+                indentStack.append(spaceCount);
+                tokens.push_back(Token(TOKEN_INDENT, "", line));
+            } else if (spaceCount < indentStack.last()) {
+                while (spaceCount < indentStack.last()) {
+                    indentStack.pop_back();
+                    tokens.push_back(Token(TOKEN_DEDENT, "", line));
+                }
+            }
+            pos = tmpPos;
+            continue;
+        }
+
         Token token = nextToken(code);
         // std::cout << "Token: " << token.value.toStdString() << " Type: " << convenientDemoTokenTypes[token.type].toStdString() << " Pos: " << pos << '\n';
 
@@ -26,9 +58,13 @@ QVector<Token> Lexer::tokenize(const QString& code) {
             tokens.append(token);
         }
     }
-    pos = 0;
-    line = 0;
-    column = 0;
+
+    while (indentStack.size() > 1) {
+        indentStack.pop_back();
+        tokens.push_back(Token(TOKEN_DEDENT, "", line));
+    }
+
+    tokens.push_back(Token(TOKEN_EOF, "", line));
     return tokens;
 }
 
@@ -75,7 +111,7 @@ Token Lexer::nextToken(const QString& code) {
  *         о строке, в которой находится число.
  */
 Token Lexer::readNumber(const QString& code) {
-    int start = pos;
+    const int start = pos;
     while (pos < code.length() && (code[pos].isDigit() || code[pos] == '.')) {
         pos++;
     }
@@ -134,7 +170,7 @@ Token Lexer::readIdentifierOrBool(const QString& code) {
         pos++;
     }
     QString id = code.mid(start, pos - start);
-    if (id == "if" || id == "else" || id == "def") {
+    if (id == "if" || id == "elif" || id == "else" || id == "def") {
         return {TOKEN_KEYWORD, id, line};
     }
     if (id == "True" || id == "False") {

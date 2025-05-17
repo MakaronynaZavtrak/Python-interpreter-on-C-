@@ -217,6 +217,11 @@ std::shared_ptr<ASTNode> Parser::parsePrimary() {
                 return parseParenthesizedExpression();
             }
             break;
+        case TOKEN_KEYWORD:
+            if (token.value == "if") {
+                return parseIfStatement();
+            }
+            break;
         case TOKEN_EOF:
             return nullptr;
         default:
@@ -316,6 +321,70 @@ std::shared_ptr<ASTNode> Parser::parseParenthesizedExpression() {
  * @param token Токен, который оказался неожиданным в текущем контексте.
  */
 void Parser::throwUnexpectedTokenError(const Token &token) { throw std::runtime_error("Unexpected token: \"" + token.value.toStdString() + "\""); }
+
+
+std::shared_ptr<ASTNode> Parser::parseIfStatement() {
+    advance();
+
+    auto condition = parseAssignment();
+
+    if (peek().type != TOKEN_OP || peek().value != ":") {
+        throw std::runtime_error("Expected ':' after if condition");
+    }
+    advance();
+
+    auto body = parseBlock();
+
+    std::vector<std::pair<std::shared_ptr<ASTNode>, std::vector<std::shared_ptr<ASTNode>>>> elifs;
+    while (peek().type == TOKEN_KEYWORD && peek().value == "elif") {
+        advance();  // съели 'elif'
+        auto elifCondition = parseAssignment();
+
+        if (peek().type != TOKEN_OP || peek().value != ":")
+            throw std::runtime_error("Expected ':' after elif condition");
+        advance();  // съели ':'
+
+        auto elifBody = parseBlock();
+        elifs.emplace_back(elifCondition, elifBody);
+    }
+
+    std::vector<std::shared_ptr<ASTNode>> elseBody;
+    if (peek().type == TOKEN_KEYWORD && peek().value == "else") {
+        advance();  // съели 'else'
+        if (peek().type != TOKEN_OP || peek().value != ":")
+            throw std::runtime_error("Expected ':' after else");
+        advance();  // съели ':'
+        elseBody = parseBlock();
+    }
+
+    return std::make_shared<IfNode>(condition, body, elifs, elseBody);
+}
+
+std::vector<std::shared_ptr<ASTNode>> Parser::parseBlock() {
+    if (peek().type != TOKEN_NEWLINE)
+        throw std::runtime_error("Expected newline after statement");
+    advance();
+
+    if (peek().type != TOKEN_INDENT)
+        throw std::runtime_error("Expected indent after statement");
+    advance();
+
+    std::vector<std::shared_ptr<ASTNode>> statements;
+    while (peek().type != TOKEN_DEDENT && peek().type != TOKEN_EOF) {
+        statements.push_back(parseAssignment());
+        if (peek().type == TOKEN_NEWLINE)
+            advance();
+    }
+
+    if (peek().type == TOKEN_DEDENT) {
+        advance();
+    } else {
+        throw std::runtime_error("Expected dedent after block");
+    }
+
+    return statements;
+}
+
 
 /**
  * Возвращает текущий токен из потока, не изменяя указываемую позицию токена.
