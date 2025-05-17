@@ -6,13 +6,13 @@
 #include <utility>
 
 /**
- * @enum TokenType
+ * @enum LexTokenType
  * @brief Представляет различные типы токенов, которые лексер может идентифицировать.
  *
  * Каждый тип токена соответствует элементу обрабатываемого исходного кода.
  * Это позволяет лексеру классифицировать и разделять различные конструкции во входных данных.
  */
-enum TokenType {
+enum LexTokenType {
     TOKEN_ID, //для имен переменных
     TOKEN_NUMBER, //для числовых литералов (10, 3.14)
     TOKEN_STRING, //для строковых литералов
@@ -20,7 +20,8 @@ enum TokenType {
     TOKEN_KEYWORD, //if, else, def
     TOKEN_OP, //+, -, =, ==, ()
     TOKEN_NEWLINE, //\n
-    TOKEN_INDENT, //отступы
+    TOKEN_INDENT, //начало отступа
+    TOKEN_DEDENT, //конец отступа
     TOKEN_EOF //конец файла
 };
 
@@ -32,11 +33,11 @@ enum TokenType {
  * где данный токен начинается в обрабатываемом тексте.
  */
 struct Token {
-    TokenType type;
+    LexTokenType type;
     QString value;
     int line; //Строка, где начинается токен
     // int column; //Столбец, где начинается токен
-    Token(const TokenType type, QString value, const int line) : type(type), value(std::move(value)), line(line) {}
+    Token(const LexTokenType type, QString value, const int line) : type(type), value(std::move(value)), line(line) {}
 };
 
 /**
@@ -57,6 +58,7 @@ private:
     int pos = 0; //текущая позиция в коде
     int line = 1; //текущая строка
     int column = 1; //текущая колонка
+    QVector<int> indentStack;
     QVector<QString> convenientDemoTokenTypes = {
                                                 "TOKEN_ID",
                                                 "TOKEN_NUMBER",
@@ -66,6 +68,7 @@ private:
                                                 "TOKEN_OP",
                                                 "TOKEN_NEWLINE",
                                                 "TOKEN_INDENT",
+                                                "TOKEN_DEDENT",
                                                 "TOKEN_EOF"
                                                 };
 

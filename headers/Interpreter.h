@@ -1,5 +1,7 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
+#include <qlist.h>
+#include <QString>
 
 /**
  * @class Interpreter
@@ -12,7 +14,16 @@
  */
 class Interpreter {
 public:
-    static void run(int argc, char* argv[]);
+    void run(int argc, char* argv[]);
+private:
+    QVector<int> indentStack;
+    bool inBlock = false;
+    const std::string PROMPT_MAIN = "\033[32m>>> \033[0m";
+    const std::string PROMPT_CONTINUE = "\033[32m... \033[0m";
+    const int INDENT_SIZE = 4;
+
+    bool isBlockStatement(const QString&);
+    int getIndentLevel(const QString&);
 };
 
 #endif // INTERPRETER_H

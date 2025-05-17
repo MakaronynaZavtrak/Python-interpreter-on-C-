@@ -58,6 +58,7 @@ public:
     explicit Value(Function&& func) : data(std::make_shared<Function>(std::move(func))) {}
 
     [[nodiscard]] QString toString() const;
+    [[nodiscard]] bool toBool() const;
 
 };
 

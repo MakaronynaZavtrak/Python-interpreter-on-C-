@@ -9,8 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core LinguistTools)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core LinguistTools)
+find_package(Qt6 REQUIRED COMPONENTS Core LinguistTools)
+
 
 set(TS_FILES myPython_ru_BY.ts)
 
@@ -30,10 +30,13 @@ add_executable(myPython
 )
 
 
-target_include_directories(myPython PRIVATE headers)
+target_include_directories(myPython PRIVATE
+        headers
+        externals/replxx/include
+)
 
 
-target_link_libraries(myPython Qt${QT_VERSION_MAJOR}::Core)
+target_link_libraries(myPython PRIVATE Qt6::Core)
 
 if(COMMAND qt_create_translation)
     qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

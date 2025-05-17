@@ -50,3 +50,36 @@ QString Value::toString() const
 
     return "Unknown unsupported type";
 }
+
+bool Value::toBool() const {
+    if (std::holds_alternative<int>(data))
+    {
+        return std::get<int>(data) != 0;
+    }
+    if (std::holds_alternative<double>(data))
+    {
+        return std::get<double>(data) != 0.0;
+    }
+    if (std::holds_alternative<bool>(data))
+    {
+        return std::get<bool>(data);
+    }
+    if (std::holds_alternative<QString>(data))
+    {
+        return !std::get<QString>(data).isEmpty();
+    }
+    if (std::holds_alternative<ListPtr>(data))
+    {
+        return std::get<ListPtr>(data) != nullptr;
+    }
+    if (std::holds_alternative<DictPtr>(data))
+    {
+        return std::get<DictPtr>(data) != nullptr;
+    }
+    if (std::holds_alternative<FunctionPtr>(data))
+    {
+        return std::get<FunctionPtr>(data) != nullptr;
+    }
+
+    throw std::runtime_error("Unsupported type");
+}
